@@ -1,6 +1,7 @@
 package dev.esdras.jwtpoc.config;
 
 import dev.esdras.jwtpoc.security.JWTAuthenticationFilter;
+import dev.esdras.jwtpoc.security.JWTAuthorizationFilter;
 import dev.esdras.jwtpoc.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_RESOURCES = {
             "/api/v1/hellojwt/**",
-            "/api/v1/clientes/**",
+            //"/api/v1/clientes/**",
             "/h2-console/**"
     };
 
@@ -49,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
     }
 
     @Override
